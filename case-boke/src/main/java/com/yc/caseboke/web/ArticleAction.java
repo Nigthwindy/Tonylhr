@@ -1,5 +1,6 @@
 package com.yc.caseboke.web;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -8,10 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
 
+import com.github.pagehelper.PageHelper;
 import com.yc.caseboke.bean.Article;
 import com.yc.caseboke.bean.Category;
+import com.yc.caseboke.bean.User;
 import com.yc.caseboke.biz.ArticleBiz;
 import com.yc.caseboke.biz.CategoryBiz;
 
@@ -45,12 +50,36 @@ public class ArticleAction {
 	
 	//显示文件
 	@GetMapping("article")
-	public String article(int id,Model model){
-		System.out.println("========="+id);
+	public String article(@RequestParam(defaultValue="1") int page,
+			int id,Model model){
+		//System.out.println("========="+id);
 		Article a = abiz.read(id);
+		
+		//调用获取评论的方法，触发分页查询
+		PageHelper.startPage(page,5);
+		a.getComments();
+		System.out.println("=======comm========"+a.getComments());
+		//查相关文章
 		List<Article> relaList = abiz.queryRela(a.getCategoryid());
 		model.addAttribute("relaList",relaList);
+		//不设定属性名称，则使用小写开头的类名
 		model.addAttribute(a);
 		return "article";
+	}
+	
+	//发布博文
+	@GetMapping("toedit")
+	public String toedit(Model model){
+		model.addAttribute("article",new Article());
+		return "articleEdit";
+	}
+	
+	@PostMapping("saveArticle")
+	public String save(Article article,Model model,
+			@SessionAttribute("loginedUser") User user){
+		article.setAuthor(user.getName());
+		article.setCreatetime(new Date());
+		abiz.save(article);
+		return article(1,article.getId(),model);
 	}
 }

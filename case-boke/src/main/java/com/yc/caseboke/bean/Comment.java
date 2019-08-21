@@ -2,6 +2,10 @@ package com.yc.caseboke.bean;
 
 import java.util.Date;
 
+import javax.validation.constraints.NotEmpty;
+
+import org.hibernate.validator.constraints.Length;
+
 public class Comment {
     /**
      *
@@ -19,6 +23,7 @@ public class Comment {
      *
      * @mbg.generated Wed Aug 14 20:09:42 CST 2019
      */
+    
     private Integer articleid;
 
     /**
@@ -28,6 +33,8 @@ public class Comment {
      *
      * @mbg.generated Wed Aug 14 20:09:42 CST 2019
      */
+    @NotEmpty(message="评论不能为空！！！")
+    @Length(min=2,max=1000,message="评论内容长度必须为2~1000个字！")
     private String content;
 
     /**

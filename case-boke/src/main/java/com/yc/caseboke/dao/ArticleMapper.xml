@@ -20,10 +20,19 @@
     <result column="readCnt" jdbcType="INTEGER" property="readcnt" />
     <result column="agreeCnt" jdbcType="INTEGER" property="agreecnt" />
     <result column="commCnt" jdbcType="INTEGER" property="commcnt" />
+    
     <association property="category" column="categoryId" fetchType="lazy"
        select="com.yc.caseboke.dao.CategoryMapper.selectByPrimaryKey"></association>
+    
+    <collection property="comments" column="id" fetchType="lazy"
+       select="selectCommentByArticleid"></collection>
+       
   </resultMap>
  
+  <select id="selectCommentByArticleid"
+        resultMap="com.yc.caseboke.dao.CommentMapper.BaseResultMap">
+        select * from comment where articleid = #{a.id}
+  </select>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yc.caseboke.bean.Article">
     <!--
       WARNING - @mbg.generated

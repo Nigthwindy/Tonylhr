@@ -33,6 +33,7 @@ public class ArticleBiz extends BizException{
 		return am.selectByExampleWithBLOBs(example);
 	}
 
+	//分类查找文章
 	public List<Article> queryByCategory(int id, int page) {
 		ArticleExample example = new ArticleExample();
 		example.createCriteria().andCategoryidEqualTo(id);
@@ -53,12 +54,13 @@ public class ArticleBiz extends BizException{
 		//更新阅读次数
 		a.setReadcnt((a.getReadcnt() == null ? 0 : a.getReadcnt()) + 1); 
 		am.updateByPrimaryKey(a);
-		System.out.println("==------==="+a.getTitle()+a.getReadcnt());
+		//System.out.println("==------==="+a.getTitle()+a.getReadcnt());
 		return a;
 	}
 
+	//查找相关文章
 	public List<Article> queryRela(Integer categoryid) {
-		System.out.println("---------"+categoryid);
+		//System.out.println("---------"+categoryid);
 		ArticleExample example = new ArticleExample();
 		//时间降序
 		example.setOrderByClause("createTime desc");
@@ -68,4 +70,9 @@ public class ArticleBiz extends BizException{
 		PageHelper.startPage(1,10);
 		return am.selectByExample(example);
 	}
+
+	public void save(Article article) {
+		am.insert(article);
+	}
+	
 }

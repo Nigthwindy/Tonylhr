@@ -75,27 +75,33 @@
               <textarea placeholder="您的评论可以一针见血" name="comment" id="comment-textarea" cols="100%" rows="3" tabindex="1" ></textarea>
               <div class="comment-ctrl"> <span class="emotion"><img src="images/face/5.png" width="20" height="20" alt="" />表情</span>
                 <div class="comment-prompt"> <i class="fa fa-spin fa-circle-o-notch"></i> <span class="comment-prompt-text"></span> </div>
-                <input type="hidden" value="1" class="articleid" />
-                <button type="submit" name="comment-submit" id="comment-submit" tabindex="5" articleid="1">评论</button>
+                <input type="hidden" value="${article.id }" class="articleid" />
+                <button type="button" name="comment-submit" id="comment-submit" tabindex="5" articleid="1">评论</button>
               </div>
             </div>
           </div>
         </form>
       </div>
       <div id="postcomments">
+        <c:forEach items="${article.comments }" var="c" varStatus="vs">
         <ol class="commentlist">
-          <li class="comment-content"><span class="comment-f">#1</span>
+          <li class="comment-content"><span class="comment-f">#${vs.index+1 }</span>
             <div class="comment-avatar"><img class="avatar" src="images/icon/icon.png" alt="" /></div>
             <div class="comment-main">
-              <p>来自<span class="address">河南郑州</span>的用户<span class="time">(2016-01-06)</span><br />
-                这是匿名评论的内容这是匿名评论的内容，这是匿名评论的内容这是匿名评论的内容这是匿名评论的内容这是匿名评论的内容这是匿名评论的内容这是匿名评论的内容。</p>
+              <p>来自<span class="address">河南郑州</span>的用户
+              <span class="time">(<fmt:formatDate value="${c.createtime }" pattern="yyyy-MM-dd HH:mm:ss"/>)
+              </span><br />
+                ${c.content }
+             </p>
             </div>
           </li>
         </ol>
-        
-        <div class="quotes"><span class="disabled">首页</span><span class="disabled">上一页</span><a class="current">1</a><a href="">2</a><span class="disabled">下一页</span><span class="disabled">尾页</span></div>
+        </c:forEach>
+        <div class="quotes" style="display: none">
+           <a id="commPage" href="article">下一页</a>
       </div>
     </div>
+  </div>
   </div>
   <aside class="sidebar">
     <div class="fixed">
@@ -161,13 +167,43 @@
 </section>
 
 <%@ include file="commons/footer.jsp" %>
+
+<script src="js/jquery.ias.js"></script>
+<script type="text/javascript">
+//无限滚动反翻页
+ias = jQuery.ias({
+	history: false,
+	container: '#postcomments',
+	item: '.commentlist',
+	pagination: '.quotes',
+	next: '#commPage',
+});
+
+page = 1;
+ias.on('load',function(event){
+	event.ajaxOptions.data = {
+			page: ++page,
+			id: ${article.id}
+	};
+});
+
+ias.extension(new IASSpinnerExtension({
+	src: '/images/loading.gif',  // 加载等待显示的图片
+}));
+
+ias.extension(new IASTriggerExtension({
+	text: '查看更多',  // 鼠标点击加载提示的文字
+	offset: 2         //到第几页后，开始鼠标点击加载
+}));
+</script>
+
 <script src="js/jquery.qqFace.js"></script> 
 <script type="text/javascript">
 $(function(){
 	$('.emotion').qqFace({
 		id : 'facebox', 
 		assign:'comment-textarea', 
-		path:'/Home/images/arclist/'	//表情存放的路径
+		path:'/images/arclist/'	//表情存放的路径
 	});
  });   
 </script>
