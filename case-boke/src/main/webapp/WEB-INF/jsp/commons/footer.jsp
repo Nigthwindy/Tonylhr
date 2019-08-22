@@ -82,6 +82,13 @@ function login(){
 	};
 	$.post(url,param,callback);
 }
+
+<%if(request.getParameter("login")!=null){%>
+    $(function(){
+    	$('#loginModal').modal('show');
+    });
+<%}%>
+
 </script>
 <!--右键菜单列表-->
 <div id="rightClickMenu">

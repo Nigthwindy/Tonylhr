@@ -3,6 +3,8 @@ package com.yc.caseboke.bean;
 import java.util.Date;
 import java.util.List;
 
+import javax.annotation.Resource;
+
 public class Article {
 	
 	//文章分类对象

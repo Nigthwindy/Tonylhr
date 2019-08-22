@@ -22,8 +22,10 @@
 <script src="js/ckeditor/ckeditor.js"></script>
 </head>
 
-<body class="user-select">    
+<body class="user-select"> 
+   
 <%@ include file="commons/header.jsp" %>
+
 <section class="container">
   <div class="content-wrap">
     <div class="content">

@@ -10,14 +10,26 @@ spring:
     username: root
     password: a
     driver-class-name: com.mysql.jdbc.Driver
-
+  http:
+    encoding:
+      force: true
+      charset: UTF-8
+      enabled: true
+   
+  resources:
+    staticLocations:
+      - classpath:/static/
+      - file:/d:/blog/
 server:
   port: 80
+  tomcat:
+    uri-encoding: UTF-8
   
 logging:
   level:
     com:
       yc:
-        dao: debug
-          
+        caseboke:
+          dao: debug
+          web: debug 
          

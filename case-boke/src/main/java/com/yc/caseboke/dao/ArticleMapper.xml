@@ -31,7 +31,7 @@
  
   <select id="selectCommentByArticleid"
         resultMap="com.yc.caseboke.dao.CommentMapper.BaseResultMap">
-        select * from comment where articleid = #{a.id}
+        select * from comment where articleid = #{aid}
   </select>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.yc.caseboke.bean.Article">
     <!--

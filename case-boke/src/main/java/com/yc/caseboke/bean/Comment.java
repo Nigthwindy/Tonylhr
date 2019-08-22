@@ -2,6 +2,7 @@ package com.yc.caseboke.bean;
 
 import java.util.Date;
 
+import javax.annotation.Resource;
 import javax.validation.constraints.NotEmpty;
 
 import org.hibernate.validator.constraints.Length;
@@ -23,7 +24,6 @@ public class Comment {
      *
      * @mbg.generated Wed Aug 14 20:09:42 CST 2019
      */
-    
     private Integer articleid;
 
     /**
